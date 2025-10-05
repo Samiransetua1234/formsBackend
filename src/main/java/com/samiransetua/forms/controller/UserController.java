@@ -1,50 +1,38 @@
 package com.samiransetua.forms.controller;
 
 import com.samiransetua.forms.entity.User;
-import com.samiransetua.forms.repository.UserRepository;
+import com.samiransetua.forms.service.interfaces.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
-import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/v1")
 public class UserController {
 
     @Autowired
-    private UserRepository userRepository;
-
+    private UserService userService;
     @GetMapping("/users")
     public List<User> getAllUsers(){
-        return userRepository.findAll();
+        return userService.getAllUsers();
     }
 
-    @PostMapping("/user")
+    @PostMapping("/users")
     public User createUser(@RequestBody User user){
-        return userRepository.save(user);
+        return userService.createUser(user);
     }
 
     @PutMapping("/users/{id}")
     public User updateUser(@PathVariable Long id,@RequestBody User updatedUser){
-        return userRepository.findById(id).map(user -> {
-            user.setName(updatedUser.getName());
-            user.setEmail(updatedUser.getEmail());
-            return userRepository.save(user);
-        }).orElseThrow(()-> new ResponseStatusException(HttpStatus.NOT_FOUND,"User not found with id "+id));
-        
+        return userService.updateUser(id, updatedUser);
     }
 
     @PostMapping("/login")
     public String login(@RequestBody User loginRequest){
-        Optional<User> userOpt = userRepository.findByEmail(loginRequest.getEmail());
-        if (userOpt.isPresent() && userOpt.get().getPassword().equals(loginRequest.getPassword())){
-            return "Login Successfull";
-        }else {
-            return "Invalid email or password";
-        }
+        return  userService.findByEmail(loginRequest.getEmail()).filter(user ->
+            user.getPassword().equals(loginRequest.getPassword())
+        ).map(user -> "Login Successfull").orElse("Invalid email or password");
     }
 
 }

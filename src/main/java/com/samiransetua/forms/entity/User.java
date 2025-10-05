@@ -2,6 +2,8 @@ package com.samiransetua.forms.entity;
 
 import jakarta.persistence.*;
 
+import java.util.List;
+
 @Entity
 @Table(name = "users")
 public class User {
@@ -15,6 +17,9 @@ public class User {
     private String email;
     @Column(nullable = false)
     private String password;
+
+    @OneToMany(mappedBy = "createdBy", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Note> notes;
 
     //no args constructor
     public User(){

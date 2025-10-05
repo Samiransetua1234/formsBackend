@@ -1,7 +1,7 @@
-package com.samiransetua.forms.controllers;
+package com.samiransetua.forms.controller;
 
-import com.samiransetua.forms.models.User;
-import com.samiransetua.forms.repositories.UserRepository;
+import com.samiransetua.forms.entity.User;
+import com.samiransetua.forms.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;

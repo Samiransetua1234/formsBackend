@@ -1,6 +1,6 @@
-package com.samiransetua.forms.repositories;
+package com.samiransetua.forms.repository;
 
-import com.samiransetua.forms.models.User;
+import com.samiransetua.forms.entity.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

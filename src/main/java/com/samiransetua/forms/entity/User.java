@@ -1,4 +1,4 @@
-package com.samiransetua.forms.models;
+package com.samiransetua.forms.entity;
 
 import jakarta.persistence.*;
 

@@ -15,11 +15,15 @@ import java.util.List;
 @RequestMapping("/api/v1/notes")
 public class NoteController {
 
-    @Autowired
-    private NoteService noteService;
+    private final NoteService noteService;
+    private final UserService userService;
+
 
     @Autowired
-    private UserService userService;
+    public NoteController(NoteService noteService, UserService userService){
+        this.noteService = noteService;
+        this.userService = userService;
+    }
 
     @GetMapping
     public List<Note> getAllNotes(){
@@ -34,6 +38,7 @@ public class NoteController {
     }
 
     @PostMapping
+    @ResponseStatus(HttpStatus.CREATED)
     public Note createNote(@RequestParam Long userId, @RequestBody Note noteRequest){
         User user = userService.findById(userId).orElseThrow(()-> new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found"));
         noteRequest.setCreatedBy(user);
